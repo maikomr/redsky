@@ -1,14 +1,27 @@
+import React from "react";
 import Box from "@mui/material/Box";
-import InputBase from "@mui/material/InputBase";
+import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function SearchInput({}) {
+interface SearchInputProps {
+  onSubmit(text: string): void;
+}
+export default function SearchInput({ onSubmit }: SearchInputProps) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onSubmit((event.target as HTMLInputElement).value);
+    }
+  };
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ marginRight: 0.5, display: "flex", alignItems: "center" }}>
-        <SearchIcon />
-      </Box>
-      <InputBase placeholder="Search location here..." sx={{ flexGrow: 1 }} />
-    </Box>
+    <TextField
+      placeholder="Search location here..."
+      onKeyDown={handleKeyDown}
+      variant="outlined"
+      margin="dense"
+      fullWidth
+      InputProps={{
+        startAdornment: <SearchIcon />,
+      }}
+    />
   );
 }

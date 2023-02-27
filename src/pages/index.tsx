@@ -5,6 +5,12 @@ import Typography from "@mui/material/Typography";
 import SearchInput from "@/components/SearchInput";
 
 export default function Home() {
+  const handleSearchInputSubmit = async (text: string) => {
+    const addressParam = encodeURIComponent(text.trim().replaceAll(" ", "+"));
+    const response = await fetch(`/api/geocode?address=${addressParam}`);
+    const data = await response.json();
+    console.log(data);
+  };
   return (
     <Container maxWidth="lg">
       <Box
@@ -15,7 +21,7 @@ export default function Home() {
           alignItems: "center",
         }}
       >
-        <SearchInput />
+        <SearchInput onSubmit={handleSearchInputSubmit} />
         <Typography variant="body1">Hello world!</Typography>
       </Box>
     </Container>
