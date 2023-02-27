@@ -1,8 +1,8 @@
 const GEOCODING_SERVICE_HOSTNAME = "https://geocoding.geo.census.gov";
 
 export interface Coordinates {
-  lat: number;
-  lon: number;
+  latitude: number;
+  longitude: number;
 }
 
 export enum ReturnType {
@@ -27,7 +27,7 @@ export const geocode = async (
   );
   const data = await response.json();
   return data.result.addressMatches.map((match: any) => ({
-    lat: match.coordinates.y,
-    lon: match.coordinates.x,
+    latitude: match.coordinates.y,
+    longitude: match.coordinates.x,
   }));
 };

@@ -9,10 +9,12 @@ export interface OfficeGridPoints {
 }
 
 export const getOfficeGridPoints = async ({
-  lat,
-  lon,
+  latitude,
+  longitude,
 }: Coordinates): Promise<OfficeGridPoints> => {
-  const response = await fetch(`${NWS_HOSTNAME}/points/${lat},${lon}`);
+  const response = await fetch(
+    `${NWS_HOSTNAME}/points/${latitude},${longitude}`
+  );
   const data = await response.json();
   const { gridId, gridX, gridY } = data.properties;
   return { gridId, gridX, gridY };
