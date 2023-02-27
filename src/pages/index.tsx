@@ -1,4 +1,8 @@
-import { Box, Container, Typography } from "@mui/material";
+import React from "react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import SearchInput from "@/components/SearchInput";
 
 export default function Home() {
   return (
@@ -11,9 +15,7 @@ export default function Home() {
           alignItems: "center",
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          RedSky
-        </Typography>
+        <SearchInput />
         <Typography variant="body1">Hello world!</Typography>
       </Box>
     </Container>
