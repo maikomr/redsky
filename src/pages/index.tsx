@@ -7,7 +7,9 @@ import SearchInput from "@/components/SearchInput";
 export default function Home() {
   const handleSearchInputSubmit = async (text: string) => {
     const addressParam = encodeURIComponent(text.trim().replaceAll(" ", "+"));
-    const response = await fetch(`/api/geocode?address=${addressParam}`);
+    const response = await fetch(
+      `/api/weatherforecast?address=${addressParam}`
+    );
     const data = await response.json();
     console.log(data);
   };

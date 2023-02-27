@@ -20,13 +20,14 @@ export const geocode = async (
   address: string,
   returnType: ReturnType = ReturnType.Locations,
   searchType: SearchType = SearchType.OneLineAddress
-) => {
+): Promise<Coordinates[]> => {
   const response = await fetch(
     `${GEOCODING_SERVICE_HOSTNAME}/geocoder/${returnType}/${searchType}?address=${address}&benchmark=2020&format=json`,
     { mode: "cors" }
   );
   const data = await response.json();
-  return data.result.addressMatches.map(
-    (match: { coordinates: Coordinates }) => match.coordinates
-  );
+  return data.result.addressMatches.map((match: any) => ({
+    lat: match.coordinates.y,
+    lon: match.coordinates.x,
+  }));
 };
