@@ -1,5 +1,5 @@
 import React from "react";
-import SelectedPeriod from "@/components/SelecedPeriod";
+import SelectedPeriod from "@/components/SelectedPeriod";
 import SearchIcon from "@mui/icons-material/Search";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
