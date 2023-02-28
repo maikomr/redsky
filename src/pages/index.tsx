@@ -1,16 +1,13 @@
 import React from "react";
 import SelectedPeriod from "@/components/SelecedPeriod";
-import Temperature from "@/components/Temperature";
 import SearchIcon from "@mui/icons-material/Search";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
+import Periods from "@/components/Periods";
 
 export default function Home() {
   const { query, push } = useRouter();
@@ -66,33 +63,7 @@ export default function Home() {
         {isSuccess && !periods.error && (
           <>
             <SelectedPeriod period={periods[0]} />
-            <Stack direction="row" spacing="auto">
-              {periods.map((period: any) => (
-                <Card
-                  key={period.name}
-                  variant="outlined"
-                  sx={{ width: 150, maxHeight: 200 }}
-                >
-                  <CardContent>
-                    <Stack alignItems="center">
-                      <Typography variant="body1" gutterBottom>
-                        {period.name}
-                      </Typography>
-                      <Temperature
-                        gutterBottom
-                        variant="h5"
-                        sx={{ fontWeight: "bold" }}
-                        value={period.temperature}
-                        unit={period.temperatureUnit}
-                      />
-                      <Typography align="center">
-                        {period.shortForecast}
-                      </Typography>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              ))}
-            </Stack>
+            <Periods periods={periods} />
           </>
         )}
         {isSuccess && periods.error && (
