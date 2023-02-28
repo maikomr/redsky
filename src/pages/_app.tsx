@@ -33,7 +33,7 @@ export default function App({
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
