@@ -1,10 +1,11 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import SearchInput from "@/components/SearchInput";
+import { CardContent } from "@mui/material";
+import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
@@ -33,22 +34,28 @@ export default function Home() {
 
   return (
     <Container maxWidth="lg">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Stack spacing={2}>
         {isReady && (
           <SearchInput
             defaultValue={query.address as string}
             onSubmit={handleSearchInputSubmit}
           />
         )}
-        <Typography>{isSuccess && JSON.stringify(data)}</Typography>
-      </Box>
+        {isSuccess && (
+          <Stack direction="row" spacing="auto">
+            {data.map((period: any) => (
+              <Card key={period.name} variant="outlined">
+                <CardContent>
+                  <Typography>{period.name}</Typography>
+                  <Typography>
+                    {period.temperature}&nbsp;&deg;{period.temperatureUnit}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </Stack>
+        )}
+      </Stack>
     </Container>
   );
 }
