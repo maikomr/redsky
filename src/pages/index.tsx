@@ -65,7 +65,7 @@ export default function Home() {
         />
         {isSuccess && !periods.error && (
           <>
-            <SelectedPeriod period={periods[1]} />
+            <SelectedPeriod period={periods[0]} />
             <Stack direction="row" spacing="auto">
               {periods.map((period: any) => (
                 <Card
