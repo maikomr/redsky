@@ -1,7 +1,9 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Image from "next/image";
 import Temperature from "./Temperature";
 
 interface SelectedPeriodProps {
@@ -41,22 +43,57 @@ export default function SelectedPeriod({ period }: SelectedPeriodProps) {
             <Typography align="center">{period.detailedForecast}</Typography>
           </Grid>
           <Grid item xs={4}>
-            <Typography align="center">
-              <strong>Wind Speed:</strong>&nbsp;{period.windSpeed},&nbsp;
-              {period.windDirection}
-            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Image
+                src="/wind-icon.svg"
+                alt="Wind icon"
+                width={24}
+                height={24}
+                priority
+              />
+              <Typography align="center">
+                {period.windSpeed},&nbsp;
+                {period.windDirection}
+              </Typography>
+            </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Typography align="center">
-              <strong>Precipitation:</strong>&nbsp;
-              {Number(period.probabilityOfPrecipitation.value)}%
-            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Image
+                src="/cloud-rain-icon.svg"
+                alt="Precipitation icon"
+                width={24}
+                height={24}
+                priority
+              />
+              <Typography align="center">
+                {Number(period.probabilityOfPrecipitation.value)}%
+              </Typography>
+            </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Typography align="center">
-              <strong>Humidity</strong>:&nbsp;
-              {Number(period.relativeHumidity.value)}%
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Image
+                src="/water-drop-teardrop-icon.svg"
+                alt="Humidity icon"
+                width={24}
+                height={24}
+                priority
+              />
+              <Typography align="center">
+                {Number(period.relativeHumidity.value)}%
+              </Typography>
+            </Stack>
           </Grid>
         </Grid>
       </CardContent>
