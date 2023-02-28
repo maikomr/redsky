@@ -1,18 +1,36 @@
-import React from "react";
+"use client";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import SearchInput from "@/components/SearchInput";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+
+const fetchWeatherForecast = async (address: string) => {
+  const addressParam = encodeURIComponent(address.trim().replaceAll(" ", "+"));
+  const response = await fetch(`/api/weatherforecast?address=${addressParam}`);
+  return response.json();
+};
 
 export default function Home() {
-  const handleSearchInputSubmit = async (text: string) => {
-    const addressParam = encodeURIComponent(text.trim().replaceAll(" ", "+"));
-    const response = await fetch(
-      `/api/weatherforecast?address=${addressParam}`
-    );
-    const data = await response.json();
-    console.log(data);
+  const { query, isReady, push } = useRouter();
+  const { data, isSuccess, refetch } = useQuery({
+    queryKey: ["weatherforecast", query.address],
+    queryFn: ({ queryKey }) => fetchWeatherForecast(queryKey[1] as string),
+    enabled:
+      typeof query.address !== "undefined" &&
+      (query.address as string)?.length > 0,
+  });
+
+  const handleSearchInputSubmit = async (address: string) => {
+    if (address?.length) {
+      await push({ query: { address } });
+      refetch();
+    }
   };
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -23,8 +41,13 @@ export default function Home() {
           alignItems: "center",
         }}
       >
-        <SearchInput onSubmit={handleSearchInputSubmit} />
-        <Typography variant="body1">Hello world!</Typography>
+        {isReady && (
+          <SearchInput
+            defaultValue={query.address as string}
+            onSubmit={handleSearchInputSubmit}
+          />
+        )}
+        <Typography>{isSuccess && JSON.stringify(data)}</Typography>
       </Box>
     </Container>
   );
