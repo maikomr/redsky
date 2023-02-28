@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import Periods from "@/components/Periods";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function Home() {
   const { query, push } = useRouter();
@@ -15,6 +16,7 @@ export default function Home() {
   const {
     data: periods,
     isSuccess,
+    isLoading,
     isInitialLoading,
   } = useQuery({
     queryKey: ["weatherforecast", query.address],
@@ -35,7 +37,7 @@ export default function Home() {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const address = (event.target as HTMLInputElement).value;
     if (event.key === "Enter" && address) {
-      push({ query: { address } });
+      push({ query: { ...query, address } });
     }
   };
 
@@ -62,8 +64,29 @@ export default function Home() {
         />
         {isSuccess && !periods.error && (
           <>
-            <SelectedPeriod period={periods[0]} />
+            <SelectedPeriod
+              period={
+                periods.find(
+                  (period: any) =>
+                    period.number === parseInt(query.period as string)
+                ) || periods[0]
+              }
+            />
             <Periods periods={periods} />
+          </>
+        )}
+        {isLoading && (
+          <>
+            <Skeleton variant="rectangular" sx={{ minHeight: "300px" }} />
+            <Stack direction="row" spacing="auto">
+              {Array.from({ length: 7 }).map((_, index) => (
+                <Skeleton
+                  key={`loading-card-${index}`}
+                  variant="rectangular"
+                  sx={{ width: 150, height: 200 }}
+                />
+              ))}
+            </Stack>
           </>
         )}
         {isSuccess && periods.error && (
