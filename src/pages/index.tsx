@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import Periods from "@/components/Periods";
 import Skeleton from "@mui/material/Skeleton";
+import Copyright from "@/components/Copyright";
 
 export default function Home() {
   const { query, push } = useRouter();
@@ -94,6 +95,7 @@ export default function Home() {
             {periods.error}
           </Alert>
         )}
+        <Copyright />
       </Stack>
     </Container>
   );
