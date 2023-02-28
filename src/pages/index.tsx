@@ -78,7 +78,7 @@ export default function Home() {
         )}
         {isLoading && (
           <>
-            <Skeleton variant="rectangular" sx={{ minHeight: "300px" }} />
+            <Skeleton variant="rectangular" sx={{ minHeight: 300 }} />
             <Stack direction="row" spacing="auto">
               {Array.from({ length: 7 }).map((_, index) => (
                 <Skeleton

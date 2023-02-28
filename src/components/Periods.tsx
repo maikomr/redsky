@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Temperature from "./Temperature";
 import { useRouter } from "next/router";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface PeriodsProps {
   periods: object[];
@@ -12,15 +13,19 @@ interface PeriodsProps {
 export default function Periods({ periods }: PeriodsProps) {
   const theme = useTheme();
   const { query, push } = useRouter();
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
-    <Stack direction="row" spacing="auto">
+    <Stack
+      direction={matches ? "row" : "column"}
+      spacing={matches ? "auto" : 1}
+    >
       {periods.map((period: any) => (
         <Paper
           key={period.name}
           variant="outlined"
           sx={{
-            width: 150,
+            width: matches ? 150 : "100%",
             maxHeight: 200,
             padding: 2,
             "&:hover": {
