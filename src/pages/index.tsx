@@ -10,10 +10,13 @@ import Alert from "@mui/material/Alert";
 import Periods from "@/components/Periods";
 import Skeleton from "@mui/material/Skeleton";
 import Copyright from "@/components/Copyright";
+import { FormControl, InputLabel, Menu, MenuItem, Select } from "@mui/material";
 
 export default function Home() {
   const { query, push } = useRouter();
   const [searchText, setSearchText] = React.useState<string>("");
+  const [numberOfDays, setNumberOfDays] = React.useState<number>(7);
+
   const {
     data: periods,
     isSuccess,
@@ -48,39 +51,56 @@ export default function Home() {
     }
   }, [query.address, isInitialLoading]);
 
+  const selectedPeriod =
+    periods &&
+    (periods
+      .slice(0, numberOfDays)
+      .find(
+        (period: any) => period.number === parseInt(query.period as string)
+      ) ||
+      periods[0]);
+
   return (
     <Container maxWidth="lg">
       <Stack spacing={4}>
-        <TextField
-          value={searchText}
-          placeholder="Search location here..."
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          variant="outlined"
-          margin="dense"
-          fullWidth
-          InputProps={{
-            startAdornment: <SearchIcon />,
-          }}
-        />
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <TextField
+            value={searchText}
+            placeholder="Search location here..."
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            variant="outlined"
+            margin="dense"
+            fullWidth
+            InputProps={{
+              startAdornment: <SearchIcon />,
+            }}
+          />
+          <FormControl sx={{ width: 150 }}>
+            <InputLabel id="number-of-days-select">Number Of Days</InputLabel>
+            <Select
+              id="number-of-days-select"
+              value={numberOfDays}
+              label="Number of Days"
+              onChange={(e) => setNumberOfDays(e.target.value as number)}
+            >
+              {Array.from({ length: 7 }, (v: number, index) => (
+                <MenuItem value={index + 1}>{index + 1}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
         {isSuccess && !periods.error && (
           <>
-            <SelectedPeriod
-              period={
-                periods.find(
-                  (period: any) =>
-                    period.number === parseInt(query.period as string)
-                ) || periods[0]
-              }
-            />
-            <Periods periods={periods} />
+            <SelectedPeriod period={selectedPeriod} />
+            <Periods periods={periods} numberOfDays={numberOfDays} />
           </>
         )}
         {isLoading && (
           <>
             <Skeleton variant="rectangular" sx={{ minHeight: 300 }} />
             <Stack direction="row" spacing="auto">
-              {Array.from({ length: 7 }).map((_, index) => (
+              {Array.from({ length: numberOfDays }).map((_, index) => (
                 <Skeleton
                   key={`loading-card-${index}`}
                   variant="rectangular"

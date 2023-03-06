@@ -8,19 +8,21 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface PeriodsProps {
   periods: object[];
+  numberOfDays: number;
 }
 
-export default function Periods({ periods }: PeriodsProps) {
+export default function Periods({ periods, numberOfDays }: PeriodsProps) {
   const theme = useTheme();
   const { query, push } = useRouter();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
     <Stack
       direction={matches ? "row" : "column"}
-      spacing={matches ? "auto" : 1}
+      spacing={1}
+      justifyContent="center"
     >
-      {periods.map((period: any) => (
+      {periods.slice(0, numberOfDays).map((period: any) => (
         <Paper
           key={period.name}
           variant="outlined"
@@ -31,6 +33,7 @@ export default function Periods({ periods }: PeriodsProps) {
             "&:hover": {
               cursor: "pointer",
               backgroundColor: theme.palette.secondary.main,
+              color: "white",
             },
           }}
           onClick={() => push({ query: { ...query, period: period.number } })}
